@@ -2,6 +2,6 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "postinstall": "cd server && npm ci && npm run build"
+    "postinstall": "cd client && npm ci && npm run build"
   }
 }
