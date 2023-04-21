@@ -1,0 +1,55 @@
+.card-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .goal-card {
+    width: 24rem;
+    border: 1px solid #e9ecef;
+    border-radius: 6px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .goal-card .card-title {
+    /* font-size: 1.25rem; */
+    /* font-weight: 500; */
+  }
+  
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    /* background-color: #1e90ff; */
+    /* color: #fff; */
+    border-radius: 4px;
+    /* margin: 0.25rem; */
+  }
+  
+  .achieved-button {
+    margin-top: 1rem;
+  }
+  
+  .goal-achieved {
+    display: inline-block;
+    margin-right: 1rem;
+  }
+  
+  .delete-goal-btn {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  .delete-goal-btn svg {
+    vertical-align: middle;
+  }
+  
+  .card-footer {
+    background-color: #fff;
+    border-top: 1px solid #e9ecef;
+  }
+  
+.clickable-title {
+  cursor: pointer;
+}

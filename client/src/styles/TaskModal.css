@@ -1,0 +1,21 @@
+.task-modal-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .task-modal-item-name {
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .task-modal-buttons {
+    display: flex;
+    align-items: center;
+  }
+  
+  .task-modal-button {
+    margin-left: 0.5rem;
+  }
+  
