@@ -2,9 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "build": "cd client && npm install && npm run build",
-    "start": "cd server && npm install && npm start",
-    "heroku-postbuild": "cd client && npm start"
+    "build": "cd client && npm run build",
+    "start": "cd server && node server.js"
   },
   "engines": {
     "node": "19.8.1"
