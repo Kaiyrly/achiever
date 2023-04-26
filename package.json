@@ -2,8 +2,8 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "heroku-postbuild": "npm ci --prefix server && cd client && npm ci && npm run start:prod",
-    "start": "cd server && node server.js"
+    "heroku-postbuild": "npm ci --prefix server && cd client && npm ci",
+    "start": "cd server && node server.js && cd ../client && npm start"
   },
   "engines": {
     "node": "19.8.1"
