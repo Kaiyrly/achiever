@@ -2,7 +2,7 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "heroku-postbuild": "npm ci --prefix server && cd client && npm ci && npm start",
+    "heroku-postbuild": "npm ci --prefix server && cd client && npm ci && npm run start:prod",
     "start": "cd server && node server.js"
   },
   "engines": {
