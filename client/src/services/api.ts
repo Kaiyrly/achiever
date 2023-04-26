@@ -3,7 +3,7 @@ import { IGoal, ITask } from '../types';
 import { cp } from 'fs';
 
 
-const API_URL = 'http://localhost:5001/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001'
 
 const API = axios.create({
   baseURL: API_URL,
@@ -32,7 +32,7 @@ export const signUp = async(email: String, username: String, password: String) =
 
 export const getGoals = async (userId: string) => {
   try {
-    const response = await fetch(`http://localhost:5001/api/goals?userId=${userId}`);
+    const response = await fetch(`${API_URL}/api/goals?userId=${userId}`);
     const responseText = await response.text();
     if (!response.ok) {
       throw new Error('Error fetching goals');

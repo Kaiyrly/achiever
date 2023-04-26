@@ -33,6 +33,7 @@ export const GoalPage: React.FC = () => {
     const location = useLocation();
     const goalName = location.state?.goalName || '';
     const goalId = params.id ?? '';
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
 
     const [goalAchieved, setGoalAchieved] = useState(false);
 
@@ -60,7 +61,7 @@ export const GoalPage: React.FC = () => {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/tasks?goalId=${params.id}`);
+        const response = await fetch(`${apiUrl}/api/tasks?goalId=${params.id}`);
         if (!response.ok) {
           throw new Error('Error fetching tasks');
         }
@@ -119,7 +120,7 @@ export const GoalPage: React.FC = () => {
 
   const handleTaskDeletion = async (taskId: string) => {
     try {
-      await axios.delete(`http://localhost:5001/api/tasks/${taskId}`);
+      await axios.delete(`${apiUrl}/api/tasks/${taskId}`);
       setTasks((oldTasks) => oldTasks.filter((task) => task.taskId !== taskId));
     } catch (error) {
       console.error(`Error deleting task: ${error}`);

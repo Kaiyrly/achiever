@@ -12,6 +12,8 @@ export const Settings: React.FC = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const { token } = useToken();
   const userId = getUserIdFromToken(token ?? '') ?? '';
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -23,7 +25,7 @@ export const Settings: React.FC = () => {
     }
 
     try {
-      const response = await axios.put('http://localhost:5001/api/auth/changePassword', {
+      const response = await axios.put(`${apiUrl}/api/auth/changePassword`, {
         currentPassword,
         newPassword,
         userId,

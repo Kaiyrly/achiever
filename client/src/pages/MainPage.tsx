@@ -21,6 +21,8 @@ export const MainPage: React.FC = () => {
     const { token } = useToken();
     const userId = getUserIdFromToken(token ?? '') ?? '';
     const [searchQuery, setSearchQuery] = useState('');
+    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+
 
 
     useEffect(() => {
@@ -66,11 +68,11 @@ export const MainPage: React.FC = () => {
 
       const handleGoalDeletion = async (goalId: string) => {
         try {
-          await axios.delete(`http://localhost:5001/api/goals/${goalId}`);
+          await axios.delete(`${apiUrl}/api/goals/${goalId}`);
           setGoals((oldGoals) => oldGoals.filter((goal) => goal.goalId !== goalId));
       
           // Delete all tasks related to the goal
-          await axios.delete(`http://localhost:5001/api/tasks/goal/${goalId}`);
+          await axios.delete(`${apiUrl}/api/tasks/goal/${goalId}`);
         } catch (error) {
           console.error(`Error deleting goal: ${error}`);
         }
@@ -78,7 +80,7 @@ export const MainPage: React.FC = () => {
 
       const handleGoalUpdate = async (goalId: string, goalAchieved: boolean) => {
         try {
-          await axios.put(`http://localhost:5001/api/goals/${goalId}`, { goalAchieved });
+          await axios.put(`${apiUrl}/api/goals/${goalId}`, { goalAchieved });
           setGoals((oldGoals) =>
             oldGoals.map((goal) => (goal.goalId === goalId ? { ...goal, goalAchieved } : goal))
           );
