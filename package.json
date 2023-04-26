@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "build": "cd client && npm start",
-    "start": "cd server && npm install && npm start"
+    "start": "cd server && node server.js"
   },
   "devDependencies": {
     "@types/node": "^18.16.1"
