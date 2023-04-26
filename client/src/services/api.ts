@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { IGoal, ITask } from '../types';
-import { cp } from 'fs';
 
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001'
@@ -11,7 +10,7 @@ const API = axios.create({
 
 export const signIn = async (email: String, password: String) => {
   try {
-    const { data } = await API.post('/auth/signin', { email, password });
+    const { data } = await API.post(`${API_URL}/api/auth/signin`, { email, password });
     console.log(data);
     return data;
   } catch (error) {
@@ -22,7 +21,7 @@ export const signIn = async (email: String, password: String) => {
 
 export const signUp = async(email: String, username: String, password: String) => {
   try {
-    const { data } = await API.post('/auth/signup', { email, password, username });
+    const { data } = await API.post(`${API_URL}/api/auth/signup`, { email, password, username });
     return data;
   } catch (error) {
     console.error('Error signing up:', error);
@@ -45,30 +44,32 @@ export const getGoals = async (userId: string) => {
 };
 
 export const createGoal = async (goal: IGoal, userId: string) => {
-  const response = await API.post(`${API_URL}/goals`, { ...goal, userId });
+  const response = await API.post(`${API_URL}/api/goals`, { ...goal, userId });
   return response.data;
 };
 
 export const updateGoal = async (goalId: string, goalAchieved: boolean) => {
-  const response = await API.put(`${API_URL}/goals/${goalId}`, { goalAchieved });
+  const response = await API.put(`${API_URL}/api/goals/${goalId}`, { goalAchieved });
   console.log(response);
   return response.data;
 };
 
 export const createTask = async (task: ITask) => {
-  const response = await API.post(`${API_URL}/tasks`, task);
+  const response = await API.post(`${API_URL}/api/tasks`, task);
   return response.data;
 };
 
 export const updateTask = async (task: ITask) => {
-  const response = await API.put(`${API_URL}/tasks/${task.taskId}`, task);
+  const response = await API.put(`${API_URL}/api/tasks/${task.taskId}`, task);
   return response.data;
 };
 
 
 export const fetchCompletedTasks = async (userId: string) => {
   try {
-    const response = await API.get(`/completedTasksPerDay/${userId}`)
+    console.log(API)
+    const response = await API.get(`${API_URL}/api/completedTasksPerDay/${userId}`)
+    console.log(response)
     const completedTasks = response.data;
     return completedTasks;
   } catch (error) {
@@ -80,7 +81,7 @@ export const updateCompletedTasks = async (userId: string, date: Date, taskCompl
   console.log(userId, date, taskComplete)
   date.setHours(0, 0, 0, 0);
   try {
-    const response = await API.put('/completedTasksPerDay', {
+    const response = await API.put(`${API_URL}/api/completedTasksPerDay`, {
       userId,
       date,
       taskComplete,
@@ -102,7 +103,7 @@ export const updateCompletedTasks = async (userId: string, date: Date, taskCompl
 
 export const fakeAuth = async (email: String, password: String) => {
   try {
-    const response = await API.post('/api/login', {
+    const response = await API.post(`${API_URL}/api/login`, {
       email,
       password,
     });

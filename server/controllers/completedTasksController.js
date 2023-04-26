@@ -28,8 +28,10 @@ exports.updateDayStats = async (req, res) => {
 
 exports.getAllStats = async(req, res) => {
     const userId = req.params.id;
+    console.log(userId)
     try {
         const completedTasksPerDay = await completedTasks.find({ userId });
+        console.log(completedTasksPerDay)
         res.send(completedTasksPerDay);
       } catch (err) {
         res.status(422).send(err.message);
