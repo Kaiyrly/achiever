@@ -12,7 +12,8 @@ export const Settings: React.FC = () => {
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
   const { token } = useToken();
   const userId = getUserIdFromToken(token ?? '') ?? '';
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+  // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+  const apiUrl = 'https://achiever.herokuapp.com'
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -25,7 +26,7 @@ export const Settings: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(`${apiUrl}/api/auth/changePassword`, {
+      const response = await axios.put(`${apiUrl}/api/auth/changePassword`, { // move this api.ts
         currentPassword,
         newPassword,
         userId,

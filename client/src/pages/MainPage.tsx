@@ -21,7 +21,8 @@ export const MainPage: React.FC = () => {
     const { token } = useToken();
     const userId = getUserIdFromToken(token ?? '') ?? '';
     const [searchQuery, setSearchQuery] = useState('');
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+    // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+    const apiUrl = 'https://achiever.herokuapp.com'
 
 
 
@@ -68,7 +69,7 @@ export const MainPage: React.FC = () => {
 
       const handleGoalDeletion = async (goalId: string) => {
         try {
-          await axios.delete(`${apiUrl}/api/goals/${goalId}`);
+          await axios.delete(`${apiUrl}/api/goals/${goalId}`); //move this to api.ts
           setGoals((oldGoals) => oldGoals.filter((goal) => goal.goalId !== goalId));
       
           // Delete all tasks related to the goal

@@ -33,7 +33,8 @@ export const GoalPage: React.FC = () => {
     const location = useLocation();
     const goalName = location.state?.goalName || '';
     const goalId = params.id ?? '';
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+    // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+    const apiUrl = 'https://achiever.herokuapp.com'
 
     const [goalAchieved, setGoalAchieved] = useState(false);
 
@@ -61,7 +62,7 @@ export const GoalPage: React.FC = () => {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/tasks?goalId=${params.id}`);
+        const response = await fetch(`${apiUrl}/api/tasks?goalId=${params.id}`); //move this to api.ts
         if (!response.ok) {
           throw new Error('Error fetching tasks');
         }
