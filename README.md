@@ -9,7 +9,7 @@ Welcome to the **Achiever**, a comprehensive tool designed to help you set, trac
 - Task Creation: Create tasks for each goal to break it down into actionable steps.
 - Task Types: Choose from different task types, such as ToDo lists, True/False tasks, and Numeric tasks (e.g., "Do 100 pushups today").
 - Statistics: View the number of completed tasks over different time periods.
-- Search: Easily find your goals and tasks using the search by tag feature.
+- Search: Easily find your goals and tasks using the search by tag/title feature.
 
 ## Future Plans
 
