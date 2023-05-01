@@ -155,7 +155,7 @@ export const fakeAuth = async (email: String, password: String) => {
 
 export const changePassword = async (userId: string, currentPassword: string, newPassword: string, token: string) => {
   try {
-    const response = await API.put(`/api/auth/changePassword`, {
+    const response = await API.put(`${API_URL}/api/auth/changePassword`, {
       currentPassword,
       newPassword,
       userId,
