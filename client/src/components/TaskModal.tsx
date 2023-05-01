@@ -4,6 +4,7 @@ import { ITask, IToDoList, INumberType, IToDo } from '../types';
 import { ModalComponent } from './ModalComponent';
 import ToDoTypeView from './ToDoTypeView';
 import { NumberTypeView } from './NumberTypeView';
+import { EditTaskForm } from './EditTaskForm';
 import { updateCompletedTasks } from '../services/api';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import { getUserIdFromToken } from '../helpers/index'
@@ -26,6 +27,8 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   const [showModal, setShowModal] = useState(false);    
   const { token } = useToken();
   const userId = getUserIdFromToken(token ?? '') ?? '';
+  const [showEditModal, setShowEditModal] = useState(false);
+
 
   useEffect(() => {
     console.log(item);
@@ -63,18 +66,21 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
     }
   };
   
-  
-  
-  
-  
-  
-  
 
   const handleDelete = async () => {
     await onDeleteTask(item.taskId);
   };
 
+  const handleEdit = async (updatedTask: ITask) => {
+    await onUpdateTask(updatedTask);
+    setShowEditModal(false);
+  };
+
+  const closeModal = () => {
+    setShowEditModal(false);
+  }
   
+
 
   const isToDoList = (value: IToDoList | INumberType): value is IToDoList => {
     return value instanceof IToDoList;
@@ -114,6 +120,19 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
           )}
         </ModalComponent>
       )}
+      {showEditModal && (
+        <ModalComponent
+          setShowModal={setShowEditModal}
+          title={`Edit ${item.name}`}
+          onClose={() => setShowEditModal(false)}
+        >
+          <EditTaskForm
+            initialTask={item}
+            editHandler={handleEdit}
+            onCancel={closeModal}
+          />
+        </ModalComponent>
+      )}
       <a className="list-group-item list-group-item-action task-modal-item">
         <div className="task-modal-item-name">{item.name}</div>
         <div className="task-modal-buttons">
@@ -133,6 +152,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
           >
             <FaTrash />
           </Button>
+          <Button
+            className="task-modal-button"
+            variant="warning"
+            size="sm"
+            onClick={() => setShowEditModal(true)}
+          >
+            Edit
+          </Button>
+
           <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
             <CircularProgressbar
               value={completionPercentage}
