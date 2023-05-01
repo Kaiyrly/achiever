@@ -3,7 +3,7 @@ import { IGoal, ITask, IFetchedTask } from '../types';
 
 
 
-// const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001'
+// const API_URL = process.env.API_URL || 'http://localhost:5001'
 const API_URL = 'https://achiever.herokuapp.com';
 const API = axios.create({
   baseURL: API_URL,
@@ -11,6 +11,7 @@ const API = axios.create({
 
 export const signIn = async (email: String, password: String) => {
   console.log(API_URL)
+  console.log(process.env.API_URL)
   try {
     const { data } = await API.post(`${API_URL}/api/auth/signin`, { email, password });
     console.log(data);
