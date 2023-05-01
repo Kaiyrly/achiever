@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { IGoal, ITask } from '../types';
+import { IGoal, ITask, IFetchedTask } from '../types';
+
 
 
 // const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001'
@@ -49,9 +50,20 @@ export const createGoal = async (goal: IGoal, userId: string) => {
   return response.data;
 };
 
-export const updateGoal = async (goalId: string, goalAchieved: boolean) => {
-  const response = await API.put(`${API_URL}/api/goals/${goalId}`, { goalAchieved });
+export const updateGoal = async (editedGoal: IGoal) => {
+  const { goalId } = editedGoal;
+  const response = await API.put(`${API_URL}/api/goals/${goalId}`, editedGoal);
   console.log(response);
+  return response.data;
+};
+
+export const deleteGoal = async (goalId: string) => {
+  const response = await API.delete(`${API_URL}/api/goals/${goalId}`);
+  return response.data;
+};
+
+export const deleteTasksByGoalId = async (goalId: string) => {
+  const response = await API.delete(`${API_URL}/api/tasks/goal/${goalId}`);
   return response.data;
 };
 
@@ -63,6 +75,26 @@ export const createTask = async (task: ITask) => {
 export const updateTask = async (task: ITask) => {
   const response = await API.put(`${API_URL}/api/tasks/${task.taskId}`, task);
   return response.data;
+};
+
+export const fetchTasksByGoalId = async (goalId: string): Promise<IFetchedTask[]> => {
+  try {
+    const response = await API.get(`${API_URL}/api/tasks?goalId=${goalId}`);
+    const fetchedTasks = response.data;
+    return fetchedTasks;
+  } catch (error) {
+    console.error(`Error fetching tasks: ${error}`);
+    throw error;
+  }
+};
+
+export const deleteTaskById = async (taskId: string) => {
+  try {
+    await API.delete(`/api/tasks/${taskId}`);
+  } catch (error) {
+    console.error(`Error deleting task: ${error}`);
+    throw error;
+  }
 };
 
 
@@ -120,4 +152,26 @@ export const fakeAuth = async (email: String, password: String) => {
   }
 };
 
-// Add more functions for different API calls
+
+export const changePassword = async (userId: string, currentPassword: string, newPassword: string, token: string) => {
+  try {
+    const response = await API.put(`/api/auth/changePassword`, {
+      currentPassword,
+      newPassword,
+      userId,
+    }, {
+      headers: {
+        'x-access-token': token,
+      },
+    });
+
+    if (response.status === 200) {
+      return true;
+    } else {
+      throw new Error('Failed to update password.');
+    }
+  } catch (error) {
+    console.error('Error updating password:', error);
+    throw error;
+  }
+};

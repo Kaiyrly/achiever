@@ -48,3 +48,16 @@ export class INumberType {
     this.targetValue = targetValue
   }
 }
+
+export interface IFetchedTask {
+  completionDate: Date;
+  createdAt: Date; 
+  goalId: string; 
+  id: string;
+  name: string;
+  taskComplete: boolean;
+  taskId: string
+  taskType: string
+  updatedAt: Date
+  value: any
+}

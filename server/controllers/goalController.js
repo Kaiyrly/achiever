@@ -24,8 +24,7 @@ exports.createGoal = async (req, res) => {
 
 exports.updateGoal = async (req, res) => {
   const goalId = req.params.id;
-  const goalAchieved = req.body.goalAchieved;
-
+  const editedGoal = req.body;
   try {
     // Check if the goal exists
     const goal = await Goal.findOne({ goalId: goalId });
@@ -33,17 +32,20 @@ exports.updateGoal = async (req, res) => {
     if (!goal) {
       return res.status(404).json({ message: 'Goal not found' });
     }
-    
-    // Check if the goal is being marked complete or incomplete
-    if (goal.goalAchieved !== req.body.goalAchieved) {
-      goal.goalAchieved = req.body.goalAchieved;
 
-      // Set the completion date if the goal is being marked complete
-      if (goal.goalAchieved) {
-        goal.completionDate = new Date();
-      } else {
-        goal.completionDate = null;
-      }
+    // Update goal fields with the editedGoal values
+    goal.name = editedGoal.name;
+    goal.description = editedGoal.description;
+    goal.tags = editedGoal.tags;
+    goal.goalAchieved = editedGoal.goalAchieved;
+    goal.startDate = editedGoal.startDate;
+    goal.endDate = editedGoal.endDate;
+
+    // Set the completion date if the goal is being marked complete
+    if (goal.goalAchieved) {
+      goal.completionDate = new Date();
+    } else {
+      goal.completionDate = null;
     }
 
     await goal.save();
@@ -52,6 +54,7 @@ exports.updateGoal = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
 
 
 exports.deleteGoal = async (req, res) => {

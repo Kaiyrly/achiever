@@ -4,26 +4,13 @@ import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { ITask, INumberType, IToDoList, IToDo } from '../types';
+import { ITask, INumberType, IToDoList, IToDo, IFetchedTask } from '../types';
 import { ModalComponent } from '../components/ModalComponent';
 import { CreateTaskForm } from '../components/CreateTaskForm';
 import { DisplayTaskList } from '../components/DisplayTaskList';
-import { updateTask, createTask, updateGoal } from '../services/api';
+import { updateTask, createTask, updateGoal, fetchTasksByGoalId, deleteTaskById  } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import '../styles/GoalPage.css';
-
-interface IFetchedTask {
-  completionDate: Date;
-  createdAt: Date; 
-  goalId: string; 
-  id: string;
-  name: string;
-  taskComplete: boolean;
-  taskId: string
-  taskType: string
-  updatedAt: Date
-  value: any
-}
 
 
 export const GoalPage: React.FC = () => {
@@ -62,18 +49,14 @@ export const GoalPage: React.FC = () => {
 
     const fetchTasks = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/tasks?goalId=${params.id}`); //move this to api.ts
-        if (!response.ok) {
-          throw new Error('Error fetching tasks');
-        }
-        const fetchedTasks = await response.json();
+        const fetchedTasks = await fetchTasksByGoalId(goalId); // Use the fetchTasksByGoalId function
         const derivedTasks: ITask[] = [];
-    
+  
         for (let i = 0; i < fetchedTasks.length; i++) {
           const task = fetchedTasks[i];
           derivedTasks.push(formatTask(task));
         }
-    
+  
         setTasks(derivedTasks);
       } catch (error) {
         console.error(`Error fetching tasks: ${error}`);
@@ -121,13 +104,12 @@ export const GoalPage: React.FC = () => {
 
   const handleTaskDeletion = async (taskId: string) => {
     try {
-      await axios.delete(`${apiUrl}/api/tasks/${taskId}`);
+      await deleteTaskById(taskId); // Use the deleteTaskById function
       setTasks((oldTasks) => oldTasks.filter((task) => task.taskId !== taskId));
     } catch (error) {
       console.error(`Error deleting task: ${error}`);
     }
   };
-
 
   return (
     <>

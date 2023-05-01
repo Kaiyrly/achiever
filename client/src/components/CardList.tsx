@@ -10,12 +10,13 @@ import '../styles/CardList.css';
 
 interface CardListProps {
   goals: IGoal[];
-  onDeleteGoal: (goalId: string) => Promise<void>;
-  onUpdateGoal: (goalId: string, goalAchieved: boolean) => Promise<void>;
+  onDeleteGoal: (goalId: string) => void;
+  onUpdateGoal: (editiedGoal: IGoal) => void;
+  onEditGoal: (goal: IGoal) => void; // Add this line
   searchQuery: string;
 }
 
-export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdateGoal, searchQuery }) => {
+export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdateGoal, onEditGoal, searchQuery }) => {
   const navigate = useNavigate();
 
   const goToGoal = (goalId: String, goalName: String) => {
@@ -28,7 +29,11 @@ export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdat
 
 
   const handleGoalAchievedChange = async (goalId: string, goalAchieved: boolean) => {
-    await onUpdateGoal(goalId, goalAchieved);
+    const goalToUpdate = goals.find((goal) => goal.goalId === goalId);
+    if (goalToUpdate) {
+      const updatedGoal = { ...goalToUpdate, goalAchieved };
+      await onUpdateGoal(updatedGoal);
+    }
   };
 
   const filteredGoals = goals.filter((goal) =>
@@ -63,6 +68,9 @@ export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdat
           </div>
           <Button variant="secondary" className="delete-goal-btn" onClick={() => handleDeleteGoal(goal.goalId)}>
             <FaTrash />
+          </Button>
+          <Button variant="outline-primary" onClick={() => onEditGoal(goal)}>
+            Edit
           </Button>
         </Card.Footer>
       </Card>

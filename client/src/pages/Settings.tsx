@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import useToken from '../hooks/useToken';
 import { getUserIdFromToken } from '../helpers';
+import { changePassword } from '../services/api';
 import '../App.css';
 
 export const Settings: React.FC = () => {
@@ -26,24 +27,13 @@ export const Settings: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(`${apiUrl}/api/auth/changePassword`, { // move this api.ts
-        currentPassword,
-        newPassword,
-        userId,
-      }, {
-        headers: {
-          'x-access-token': token,
-        },
-      });
+      await changePassword(userId, currentPassword, newPassword, token ?? ''); // Use the changePassword function
+      alert('Password updated successfully.');
 
-      if (response.status === 200) {
-        alert('Password updated successfully.');
-
-        // Empty the form
-        setCurrentPassword('');
-        setNewPassword('');
-        setConfirmNewPassword('');
-      }
+      // Empty the form
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
     } catch (error) {
       console.error('Error updating password:', error);
       alert('Failed to update password. Please try again.');
