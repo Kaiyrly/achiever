@@ -14,7 +14,7 @@ export interface IGoal {
 
 export interface ITask {
   name: string
-  value: IToDoList | INumberType
+  value: IToDoList | INumberType | IBooleanType
   taskComplete: boolean
   goalId: string
   taskId: string
@@ -48,6 +48,18 @@ export class INumberType {
     this.targetValue = targetValue
   }
 }
+
+export class IBooleanType {
+  name: string;
+  value: boolean;
+
+  constructor(name: string, value: boolean) {
+    this.name = name;
+    this.value = value;
+  }
+}
+
+
 
 export interface IFetchedTask {
   completionDate: Date;

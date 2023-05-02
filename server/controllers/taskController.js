@@ -1,28 +1,42 @@
-const { Task, NumberTypeTask, ToDoListTask } = require("../models/Task");
+const { Task, NumberTypeTask, ToDoListTask, BooleanTypeTask } = require("../models/Task");
 
 
 exports.createTask = async (req, res) => {
+  console.log(req.body);
   try {
-    let newTask;
+    let taskData = {
+      name: req.body.name,
+      taskId: req.body.taskId,
+      goalId: req.body.goalId,
+      taskComplete: req.body.taskComplete,
+      taskType: req.body.taskType,
+    };
+
     switch (req.body.taskType) {
       case "NumberType":
-        newTask = new NumberTypeTask(req.body);
+        taskData.value = req.body.value;
         break;
       case "ToDoList":
-        newTask = new ToDoListTask({name: req.body.name, taskId: req.body.taskId, goalId: req.body.goalId, value: req.body.value.value, taskComplete: req.body.taskComplete});
+        taskData.value = req.body.value.value;
+        break;
+      case "BooleanType":
+        taskData.value = req.body.value;
         break;
       default:
         res.status(400).json({ message: "Invalid task type" });
         return;
     }
 
+    const newTask = new Task(taskData);
     await newTask.save();
-    res.status(201).json({newTask, taskId: newTask.taskId});
+    res.status(201).json({ newTask, taskId: newTask.taskId });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(400).json({ message: error.message });
   }
 };
+
+
 
 exports.getTasks = async (req, res) => {
   const goalId = req.query.goalId;
@@ -47,49 +61,41 @@ exports.getCompletedTasks = async (req, res) => {
   }
 };
 
-
 exports.updateTask = async (req, res) => {
   const taskId = req.params.id;
+  console.log(req.body.taskType);
   try {
-    let task;
-    switch (req.body.taskType) {
-      case "NumberType":
-        task = await Task.findOneAndUpdate({ taskId: taskId }, {value: req.body.value}, { new: true }); 
-        break;
-      case "ToDoList":
-        task = await Task.findOneAndUpdate({taskId: taskId}, { value: req.body.value.value}, {new: true});
-        break;
-      default:
-        res.status(400).json({ message: "Invalid task type" });
-        return;
+    const updateData = {
+      name: req.body.name,
+      taskType: req.body.taskType,
+      taskComplete: req.body.taskComplete,
+      value: req.body.taskType === "ToDoList" ? req.body.value.value : req.body.value,
+    };
+    console.log(updateData);
+
+    if (req.body.taskComplete) {
+      updateData.completionDate = new Date();
+    } else {
+      updateData.completionDate = null;
     }
+
+    const task = await Task.findOneAndUpdate({ taskId: taskId }, updateData, { new: true });
 
     if (!task) {
       res.status(404).json({ message: "Task not found" });
       return;
     }
 
-    // Check if the task is being marked complete or incomplete
-    if (task.taskComplete !== req.body.taskComplete) {
-      task.taskComplete = req.body.taskComplete;
+    console.log(task.taskType);
 
-      // Set the completion date if the task is being marked complete
-      if (task.taskComplete) {
-        task.completionDate = new Date();
-      } else {
-        task.completionDate = null;
-      }
-    }
-
-
-    const updatedTask = await task.save();
-
-    res.json(updatedTask);
+    res.json(task);
   } catch (error) {
     res.status(400).json({ message: error.message });
-    console.log(error)
+    console.log(error);
   }
 };
+
+
 
 
 

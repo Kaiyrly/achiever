@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 
 const baseOptions = {
-  discriminatorKey: "taskType",
   collection: "tasks",
   timestamps: true,
   toJSON: {
@@ -18,7 +17,7 @@ const TaskSchema = new mongoose.Schema({
   name: String,
   taskId: {
     type: String,
-    required: true
+    required: true,
   },
   goalId: String,
   taskComplete: Boolean,
@@ -27,39 +26,17 @@ const TaskSchema = new mongoose.Schema({
   completionDate: {
     type: Date,
     default: null,
-  }
+  },
 }, baseOptions);
 
-TaskSchema.set('toJSON', {
+TaskSchema.set("toJSON", {
   virtuals: true,
   versionKey: false,
   transform: function (doc, ret) {
     delete ret._id;
-  }
+  },
 });
-
-const NumberTypeSchema = new mongoose.Schema({
-  value: {
-    name: String,
-    value: Boolean,
-    initialValue: Number,
-    currentValue: Number,
-    targetValue: Number,
-  }
-});
-
-const ToDoListSchema = new mongoose.Schema({
-  value: [
-    {
-      name: String,
-      value: Boolean,
-      _id: String,
-    },
-  ],
-}, baseOptions);
-
 
 const Task = mongoose.model("Task", TaskSchema);
-const NumberTypeTask = Task.discriminator("NumberType", NumberTypeSchema);
-const ToDoListTask = Task.discriminator("ToDoList", ToDoListSchema);
-module.exports = { Task, NumberTypeTask, ToDoListTask };
+
+module.exports = { Task };

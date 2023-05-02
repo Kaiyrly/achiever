@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
-import { ITask, IToDoList, INumberType, IToDo } from '../types';
+import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
 import { ModalComponent } from './ModalComponent';
 import ToDoTypeView from './ToDoTypeView';
 import { NumberTypeView } from './NumberTypeView';
+import { BooleanTypeView } from './BooleanTypeView';
 import { EditTaskForm } from './EditTaskForm';
 import { updateCompletedTasks } from '../services/api';
 import { CircularProgressbar } from 'react-circular-progressbar';
@@ -29,10 +30,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   const userId = getUserIdFromToken(token ?? '') ?? '';
   const [showEditModal, setShowEditModal] = useState(false);
 
-
-  useEffect(() => {
-    console.log(item);
-  })
 
 
   const handleModalClose = async (updatedItem: ITask) => {
@@ -65,6 +62,19 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
       });
     }
   };
+
+  const handleCloseForBooleanType = (value: boolean) => {
+    if (item.value instanceof IBooleanType) {
+      const taskComplete = value;
+      if(taskComplete !== item.taskComplete) updateCompletedTasks(userId, new Date(), taskComplete);
+      handleModalClose({
+        ...item,
+        value: new IBooleanType(item.value.name, value),
+        taskComplete: taskComplete,
+      });
+    }
+  };
+  
   
 
   const handleDelete = async () => {
@@ -72,9 +82,24 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   };
 
   const handleEdit = async (updatedTask: ITask) => {
+    // Check if the task type has changed
+    if (updatedTask.taskType !== item.taskType) {
+      // Recalculate taskComplete based on the new task type
+      const newTaskComplete = calculateCompletionPercentage(updatedTask) === 100;
+  
+      // If the taskComplete value has changed, update the completed tasks count
+      if (newTaskComplete !== updatedTask.taskComplete) {
+        updateCompletedTasks(userId, new Date(), newTaskComplete);
+      }
+  
+      // Update the taskComplete value in the updatedTask object
+      updatedTask.taskComplete = newTaskComplete;
+    }
+    
     await onUpdateTask(updatedTask);
     setShowEditModal(false);
   };
+  
 
   const closeModal = () => {
     setShowEditModal(false);
@@ -82,13 +107,17 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   
 
 
-  const isToDoList = (value: IToDoList | INumberType): value is IToDoList => {
+  const isToDoList = (value: IToDoList | INumberType | IBooleanType): value is IToDoList => {
     return value instanceof IToDoList;
   };
 
-  const isNumberType = (value: IToDoList | INumberType): value is INumberType => {
+  const isNumberType = (value: IToDoList | INumberType | IBooleanType): value is INumberType => {
     return value instanceof INumberType;
   };
+
+  const isBooleanType = (value: IToDoList | INumberType | IBooleanType): value is IBooleanType => {
+    return value instanceof IBooleanType;
+  }
 
   const calculateCompletionPercentage = (task: ITask): number => {
     if (isNumberType(task.value)) {
@@ -97,7 +126,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
     } else if (isToDoList(task.value)) {
       const completedTodos = task.value.value.filter((todo) => todo.value === true);
       return (completedTodos.length / task.value.value.length) * 100;
+    } else if (isBooleanType(task.value)) {
+      return task.value.value ? 100 : 0;
     }
+    return 0;
     return 0;
   };
 
@@ -118,6 +150,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
           {isNumberType(item.value) && (
             <NumberTypeView number={item.value} onClose={handleCloseForNumberType} />
           )}
+          {isBooleanType(item.value) && (
+            <BooleanTypeView item={item.value} onClose={handleCloseForBooleanType} />
+          )}
+
         </ModalComponent>
       )}
       {showEditModal && (

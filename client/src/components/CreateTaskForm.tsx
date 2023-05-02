@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ITask, IToDoList, INumberType, IToDo } from '../types';
+import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { randomIdGenerator } from '../utils';
@@ -12,13 +12,14 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
     goalId: goalId, // need to change to the goal's id
     value: new IToDoList([]),
     taskComplete: false,
-    taskType: "NumberType"
+    taskType: "ToDoList"
   });
 
   const [taskType, setTaskType] = useState('ToDoList');
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(task)
     createHandler?.(task);
   };
 
@@ -47,7 +48,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
               setTask({
                 ...task,
                 value: new INumberType(task.name, false, numberType.initialValue, numberType.currentValue, targetValue),
-                taskType: taskType
+                taskType: "NumberType"
               });
             }}
           />
@@ -67,7 +68,27 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
               setTask({
                 ...task,
                 value: new IToDoList(toDoList),
-                taskType: taskType
+                taskType: "ToDoList"
+              });
+            }}
+          />
+        </Form.Group>
+      );
+    }
+
+    if (taskType === 'BooleanType') {
+      console.log(taskType)
+      return (
+        <Form.Group controlId="booleanTask">
+          <Form.Label>Value</Form.Label>
+          <Form.Check
+            type="checkbox"
+            onChange={(e) => {
+              const value = e.target.checked;
+              setTask({
+                ...task,
+                value: new IBooleanType(task.name, value),
+                taskType: "BooleanType",
               });
             }}
           />
@@ -81,10 +102,10 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
   return (
     <Form onSubmit={submitHandler}>
       <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Name of the goal</Form.Label>
+        <Form.Label>Name of the task</Form.Label>
         <Form.Control
           type="text"
-          placeholder="Apply to OnSquare"
+          placeholder="Do 100 push ups"
           onChange={(e) => {
             setTask({ ...task, name: e.target.value });
           }}
@@ -95,11 +116,30 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
         <Form.Select
           aria-label="Task Type"
           onChange={(e) => {
+            let value: IBooleanType | INumberType | IToDoList;
+        
+            switch (e.target.value) {
+              case 'NumberType':
+                value = new INumberType(task.name, false, 0, 0, 0);
+                break;
+              case 'ToDoList':
+                value = new IToDoList([]);
+                break;
+              case 'BooleanType':
+                value = new IBooleanType(task.name, false);
+                break;
+              default:
+                return;
+            }
+        
             setTaskType(e.target.value);
+            setTask({ ...task, taskType: e.target.value, value });
           }}
         >
+
           <option value="ToDoList">To-Do List</option>
           <option value="NumberType">Number Type</option>
+          <option value="BooleanType">Boolean Type</option>
         </Form.Select>
       </Form.Group>
       {taskTypeForm()}

@@ -4,7 +4,7 @@ import Tab from 'react-bootstrap/Tab';
 import Button from 'react-bootstrap/Button';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { ITask, INumberType, IToDoList, IToDo, IFetchedTask } from '../types';
+import { ITask, INumberType, IToDoList, IToDo, IFetchedTask, IBooleanType } from '../types';
 import { ModalComponent } from '../components/ModalComponent';
 import { CreateTaskForm } from '../components/CreateTaskForm';
 import { DisplayTaskList } from '../components/DisplayTaskList';
@@ -39,8 +39,13 @@ export const GoalPage: React.FC = () => {
         derivedTask.value = new INumberType(task.name, task.taskComplete, task.value.initialValue, task.value.currentValue, task.value.targetValue);
       }
       if (task.taskType === 'ToDoList') {
+        console.log(task)
         const toDoList: IToDo[] = task.value;
         derivedTask.value = new IToDoList(toDoList);
+      }
+      if (task.taskType === 'BooleanType') {
+        // const toDoList: IBooleanType = task.value;
+        derivedTask.value = new IBooleanType(task.value.name, task.value.value);
       }
 
       return derivedTask
@@ -84,6 +89,8 @@ export const GoalPage: React.FC = () => {
 
   const updateTaskInDatabase = async (updatedTask: ITask) => {
     updatedTask.goalId = params.id ?? '';
+    // const a: {b: any, c: any} = {b: 0, c: 0};
+    // console.log(a.b.c.d)
     try {
       await updateTask(updatedTask);
       setTasks((oldTasks) =>

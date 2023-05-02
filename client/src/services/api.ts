@@ -112,7 +112,6 @@ export const fetchCompletedTasks = async (userId: string) => {
 }
 
 export const updateCompletedTasks = async (userId: string, date: Date, taskComplete: boolean) => {
-  console.log(userId, date, taskComplete)
   date.setHours(0, 0, 0, 0);
   try {
     const response = await API.put(`${API_URL}/api/completedTasksPerDay`, {
