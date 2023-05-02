@@ -174,42 +174,48 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
           />
         </ModalComponent>
       )}
-      <a className="list-group-item list-group-item-action task-modal-item">
+      <div className="list-group-item list-group-item-action task-modal-item" onClick={() => setShowModal(true)}>
         <div className="task-modal-item-name">{item.name}</div>
-        <div className="task-modal-buttons">
-          <Button
-            className="task-modal-button"
-            variant="primary"
-            size="sm"
-            onClick={() => setShowModal(true)}
-          >
-            Show task
-          </Button>
-          <Button
-            className="task-modal-button"
-            variant="secondary"
-            size="sm"
-            onClick={handleDelete}
-          >
-            <FaTrash />
-          </Button>
-          <Button
-            className="task-modal-button"
-            variant="warning"
-            size="sm"
-            onClick={() => setShowEditModal(true)}
-          >
-            Edit
-          </Button>
+          <div className="task-modal-buttons">
+            <Button
+              className="task-modal-button"
+              variant="primary"
+              size="sm"
+              onClick={() => setShowModal(true)}
+            >
+              Show task
+            </Button>
+            <Button
+              className="task-modal-button"
+              variant="secondary"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete();
+              }}
+            >
+              <FaTrash />
+            </Button>
+            <Button 
+              className="task-modal-button"
+              variant="warning"
+              size="sm"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowEditModal(true);
+              }}
+            >
+              Edit
+            </Button>
 
-          <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
-            <CircularProgressbar
-              value={completionPercentage}
-              text={`${Math.round(completionPercentage)}%`}
-            />
-          </div>
+            <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
+              <CircularProgressbar
+                value={completionPercentage}
+                text={`${Math.round(completionPercentage)}%`}
+              />
+            </div>
         </div>
-      </a>
+      </div>
     </>
   );
   return <>default view</>;

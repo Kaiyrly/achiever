@@ -24,7 +24,10 @@ export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdat
   };
 
   const handleDeleteGoal = async (goalId: string) => {
-    await onDeleteGoal(goalId);
+    const userConfirmed = window.confirm("Are you sure you want to delete this goal?");
+    if (userConfirmed) {
+      await onDeleteGoal(goalId);
+    }
   };
 
 
@@ -44,35 +47,54 @@ export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdat
   const displayCards = filteredGoals.map((goal) => {
     return (
       <Card key={goal.goalId} className="goal-card">
-        <Card.Body>
-          <div className="clickable-title" onClick={() => goToGoal(goal.goalId, goal.name)}>
+        <div
+          className="card-clickable-area"
+          onClick={(e) => {
+            e.stopPropagation();
+            goToGoal(goal.goalId, goal.name);
+          }}
+        >
+          <Card.Body>
             <Card.Title>{goal.name}</Card.Title>
-          </div>
-          <div>
-            {goal.tags.map((tag, index) => (
-              <span key={index} className="tag">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </Card.Body>
-        <Card.Footer>
-          <div className="goal-achieved">
-            <input
-              type="checkbox"
-              id={`goalAchievedCheckbox-${goal.goalId}`}
-              checked={goal.goalAchieved}
-              onChange={(e) => handleGoalAchievedChange(goal.goalId, e.target.checked)}
-            />
-            <label htmlFor={`goalAchievedCheckbox-${goal.goalId}`}>Goal Achieved</label>
-          </div>
-          <Button variant="secondary" className="delete-goal-btn" onClick={() => handleDeleteGoal(goal.goalId)}>
-            <FaTrash />
-          </Button>
-          <Button variant="outline-primary" onClick={() => onEditGoal(goal)}>
-            Edit
-          </Button>
-        </Card.Footer>
+            <div>
+              {goal.tags.map((tag, index) => (
+                <span key={index} className="tag">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </Card.Body>
+          <Card.Footer>
+            <div className="goal-achieved" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="checkbox"
+                id={`goalAchievedCheckbox-${goal.goalId}`}
+                checked={goal.goalAchieved}
+                onChange={(e) => handleGoalAchievedChange(goal.goalId, e.target.checked)}
+              />
+              <label htmlFor={`goalAchievedCheckbox-${goal.goalId}`}>Goal Achieved</label>
+            </div>
+            <Button
+              variant="secondary"
+              className="delete-goal-btn"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDeleteGoal(goal.goalId);
+              }}
+            >
+              <FaTrash />
+            </Button>
+            <Button
+              variant="outline-primary"
+              onClick={(e) => {
+                e.stopPropagation();
+                onEditGoal(goal);
+              }}
+            >
+              Edit
+            </Button>
+          </Card.Footer>
+        </div>
       </Card>
     );
   });

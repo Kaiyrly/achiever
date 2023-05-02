@@ -17,9 +17,9 @@ import PrivateRoute from './PrivateRoute';
 function App() {
   const { token, setToken } = useToken();
 
-  return (
+  return  (
     <>
-      <NavBar token={token} setToken={setToken} />
+      {token && <NavBar token={token} setToken={setToken} />}
       <Container>
         <Routes>
           <Route path="/" element={<Layout />}>
