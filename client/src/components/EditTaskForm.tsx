@@ -48,9 +48,10 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             onChange={(e) => {
               const initialValue = parseInt(e.target.value);
               const numberType = task.value as INumberType;
+              numberType.initialValue = initialValue
               setTask({
                 ...task,
-                value: { ...numberType, initialValue },
+                value: numberType,
               });
             }}
           />
@@ -61,9 +62,10 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             onChange={(e) => {
               const targetValue = parseInt(e.target.value);
               const numberType = task.value as INumberType;
+              numberType.targetValue = targetValue
               setTask({
                 ...task,
-                value: { ...numberType, targetValue },
+                value: numberType,
               });
             }}
           />
@@ -102,9 +104,10 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
               onChange={(e) => {
                 const value = e.target.checked;
                 const booleanType = task.value as IBooleanType;
+                booleanType.value = value
                 setTask({
                   ...task,
-                  value: { ...booleanType, value },
+                  value: booleanType,
                 });
               }}
             />
@@ -129,9 +132,9 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
           }}
         />
       </Form.Group>
-      <Form.Group controlId="taskTypeSelect">
-        <Form.Label>Task Type</Form.Label>
-        <Form.Select
+      {/* <Form.Group controlId="taskTypeSelect"> */}
+        {/* <Form.Label>Task Type</Form.Label> */}
+        {/* <Form.Select
             aria-label="Task Type"
             value={taskType}
             onChange={(e) => {
@@ -171,8 +174,8 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
           <option value="ToDoList">To-Do List</option>
           <option value="NumberType">Number Type</option>
           <option value="BooleanType">Boolean Type</option>
-        </Form.Select>
-      </Form.Group>
+        </Form.Select> */}
+      {/* </Form.Group> */}
       {taskTypeForm()}
       <Button type="submit">Save changes</Button>
       <Button variant="secondary" className="ml-2" onClick={onCancel}>Cancel</Button>

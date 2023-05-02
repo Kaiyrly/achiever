@@ -39,13 +39,13 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
     setShowModal(false);
   };
 
-  const handleCloseForNumberType = (currentCount: number, goalCount: number) => {
+  const handleCloseForNumberType = (currentCount: number, goalCount: number, initialCount?: number) => {
     if (isNumberType(item.value)) {
       const taskComplete = currentCount >= goalCount;
       if(taskComplete !== item.taskComplete) updateCompletedTasks(userId, new Date(), taskComplete);
       handleModalClose({
         ...item,
-        value: new INumberType(item.value.name, taskComplete, item.value.initialValue, currentCount, goalCount),
+        value: new INumberType(item.value.name, taskComplete, initialCount ?? item.value.initialValue, currentCount, goalCount),
         taskComplete: taskComplete,
       });
     }
@@ -82,21 +82,17 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   };
 
   const handleEdit = async (updatedTask: ITask) => {
-    // Check if the task type has changed
-    if (updatedTask.taskType !== item.taskType) {
-      // Recalculate taskComplete based on the new task type
-      const newTaskComplete = calculateCompletionPercentage(updatedTask) === 100;
-  
-      // If the taskComplete value has changed, update the completed tasks count
-      if (newTaskComplete !== updatedTask.taskComplete) {
-        updateCompletedTasks(userId, new Date(), newTaskComplete);
-      }
-  
-      // Update the taskComplete value in the updatedTask object
-      updatedTask.taskComplete = newTaskComplete;
+    if(isToDoList(updatedTask.value)){
+      handleCloseForToDoType(updatedTask.value, updatedTask.value.value)
+    }
+    if(isNumberType(updatedTask.value)){
+      handleCloseForNumberType(updatedTask.value.currentValue, updatedTask.value.targetValue, updatedTask.value.initialValue)
+    }
+    if(isBooleanType(updatedTask.value)){
+      handleCloseForBooleanType(updatedTask.value.value)
     }
     
-    await onUpdateTask(updatedTask);
+    // await onUpdateTask(updatedTask);
     setShowEditModal(false);
   };
   
