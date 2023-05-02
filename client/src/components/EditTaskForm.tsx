@@ -46,7 +46,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             type="number"
             value={task.value.initialValue}
             onChange={(e) => {
-              const initialValue = parseInt(e.target.value);
+              const initialValue = parseInt(e.target.value) || 0;
               const numberType = task.value as INumberType;
               numberType.initialValue = initialValue
               setTask({
@@ -60,7 +60,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             type="number"
             value={task.value.targetValue}
             onChange={(e) => {
-              const targetValue = parseInt(e.target.value);
+              const targetValue = parseInt(e.target.value) || 0;
               const numberType = task.value as INumberType;
               numberType.targetValue = targetValue
               setTask({
@@ -83,10 +83,19 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
               onChange={(e) => {
                 const toDoList = e.target.value
                   .split(',')
-                  .map((item) => ({ name: item.trim(), value: false } as IToDo));
+                  .map((item) => {
+                    const trimmedItem = item.trim();
+                    const existingItem = isToDoList(initialTask.value) && initialTask.value.value.find(
+                      (existing: IToDo) => existing.name === trimmedItem
+                    );
+
+                    return existingItem
+                      ? existingItem
+                      : ({ name: trimmedItem, value: false } as IToDo);
+                  });
                 setTask({
                   ...task,
-                  value: { value: toDoList },
+                  value: new IToDoList(toDoList),
                 });
               }}
             />

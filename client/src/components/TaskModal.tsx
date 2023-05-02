@@ -41,7 +41,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
 
   const handleCloseForNumberType = (currentCount: number, goalCount: number, initialCount?: number) => {
     if (isNumberType(item.value)) {
-      const taskComplete = currentCount >= goalCount;
+      const taskComplete = item.value.initialValue > item.value.targetValue
+        ? currentCount <= goalCount
+        : currentCount >= goalCount;
       if(taskComplete !== item.taskComplete) updateCompletedTasks(userId, new Date(), taskComplete);
       handleModalClose({
         ...item,
@@ -117,15 +119,22 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
 
   const calculateCompletionPercentage = (task: ITask): number => {
     if (isNumberType(task.value)) {
-      const progress = (task.value.currentValue / task.value.targetValue) * 100;
-      return progress > 100 ? 100 : progress;
-    } else if (isToDoList(task.value)) {
+      const range = Math.abs(task.value.targetValue - task.value.initialValue);
+      const currentProgress = task.value.initialValue > task.value.targetValue
+        ? task.value.initialValue - task.value.currentValue
+        : task.value.currentValue - task.value.initialValue;
+
+      const progress = Math.max(0, Math.min(100, (currentProgress / range) * 100));
+
+      return progress;
+    }
+    else if (isToDoList(task.value)) {
       const completedTodos = task.value.value.filter((todo) => todo.value === true);
       return (completedTodos.length / task.value.value.length) * 100;
-    } else if (isBooleanType(task.value)) {
+    } 
+    else if (isBooleanType(task.value)) {
       return task.value.value ? 100 : 0;
     }
-    return 0;
     return 0;
   };
 

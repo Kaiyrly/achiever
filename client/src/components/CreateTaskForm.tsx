@@ -19,7 +19,6 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(task)
     createHandler?.(task);
   };
 
@@ -77,7 +76,6 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
     }
 
     if (taskType === 'BooleanType') {
-      console.log(taskType)
       return (
         <Form.Group controlId="booleanTask">
           <Form.Label>Value</Form.Label>
