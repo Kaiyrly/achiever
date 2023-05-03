@@ -4,7 +4,7 @@ import { IGoal, ITask, IFetchedTask } from '../types';
 
 
 // const API_URL = process.env.API_URL || 'http://localhost:5001'
-const API_URL = 'https://achiever.herokuapp.com';
+const API_URL = 'https://milemarker.herokuapp.com';
 const API = axios.create({
   baseURL: API_URL,
 });
