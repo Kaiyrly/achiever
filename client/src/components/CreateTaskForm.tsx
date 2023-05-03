@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
+import { breakdownRecurringTask } from '../services/gptApi';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { randomIdGenerator } from '../utils';
@@ -23,6 +24,16 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
   };
 
   const taskTypeForm = () => {
+
+    const handleBreakTasks = async () => {
+      if (task.name) {
+        const simplerTasks = await breakdownRecurringTask(task.name);
+        const toDoList = simplerTasks.split(',').map((item: string) => ({ name: item.trim(), value: false } as IToDo));
+        setTask({ ...task, value: new IToDoList(toDoList) });
+      }
+    };
+  
+
     if (taskType === 'NumberType') {
       return (
         <Form.Group controlId="numberTask">
@@ -71,6 +82,9 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
               });
             }}
           />
+          {/* <Button variant="secondary" onClick={handleBreakTasks} className="mt-3">
+            Break Tasks
+          </Button> */}
         </Form.Group>
       );
     }

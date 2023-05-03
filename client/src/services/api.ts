@@ -3,8 +3,8 @@ import { IGoal, ITask, IFetchedTask } from '../types';
 
 
 
-// const API_URL = process.env.API_URL || 'http://localhost:5001'
-const API_URL = 'https://milemarker.herokuapp.com';
+const API_URL = process.env.API_URL || 'http://localhost:5001'
+// const API_URL = 'https://milemarker.herokuapp.com';
 const API = axios.create({
   baseURL: API_URL,
 });
@@ -175,3 +175,18 @@ export const changePassword = async (userId: string, currentPassword: string, ne
     throw error;
   }
 };
+
+export const fetchGPTAnswer = async (prompt: string) => {
+  try {
+    const response = await API.post(`${API_URL}/gpt3`, {
+      prompt,
+      temperature: 0.5,
+      max_tokens: 150,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    return 'An error occurred while processing your request.';
+  }
+}

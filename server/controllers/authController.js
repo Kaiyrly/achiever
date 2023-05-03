@@ -18,6 +18,7 @@ exports.signup = async (req, res) => {
       res.send({ message: "User was registered successfully!" });
     } catch (err) {
       res.status(500).send({ message: err });
+      console.log(err)
     }
   };
   
@@ -37,6 +38,7 @@ exports.signup = async (req, res) => {
       );
   
       if (!passwordIsValid) {
+        console.log("Invalid password")
         return res.status(401).send({
           accessToken: null,
           message: "Invalid Password!"
@@ -58,6 +60,7 @@ exports.signup = async (req, res) => {
     } catch (err) {
       console.log(err);
       res.status(500).send({ message: err });
+      console.log(err)
     }
   };
   
