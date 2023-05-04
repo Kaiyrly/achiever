@@ -11,6 +11,7 @@ import { Login } from './pages/Login';
 import { Layout } from './components/Layout';
 import { Statistics } from './pages/Statistics';
 import { Signup } from './pages/Signup';
+import { ForgotPassword } from './pages/ForgotPassword';
 import useToken from './hooks/useToken';
 import PrivateRoute from './PrivateRoute';
 
@@ -29,6 +30,7 @@ function App() {
             <Route path="goals/:id" element={<PrivateRoute><GoalPage /></PrivateRoute>} />
             <Route path="login" element={<Login token={token} setToken={setToken} />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="forgot-password" element={<ForgotPassword />} />
             <Route path="*" element={<ErrorPage />} />
           </Route>
         </Routes>

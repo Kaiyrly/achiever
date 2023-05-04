@@ -72,6 +72,9 @@ export const Login: React.FC<{token: string | undefined, setToken: (userToken: {
             Register
           </Button>
         </ButtonGroup>
+        <Button variant="link" onClick={() => navigate('/forgot-password')}>
+          Forgot Password?
+        </Button>
     </Form>
     </div>
   )

@@ -4,6 +4,9 @@ const User = require("../models/User");
 
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const nodemailer = require('nodemailer');
+const crypto = require('crypto-browserify');
+
 
 exports.signup = async (req, res) => {
     try {
@@ -104,4 +107,49 @@ exports.signup = async (req, res) => {
   };
   
   
+  exports.sendRandomPassword = async (req, res) => {
+    try {
+      const email = req.body.email;
+      const user = await User.findOne({ email });
   
+      if (!user) {
+        return res.status(404).send({ message: "User not found." });
+      }
+  
+      // Generate a random password
+      const newPassword = crypto.randomBytes(8).toString('hex');
+  
+      // Update the user's password in the database
+      user.password = bcrypt.hashSync(newPassword, 8);
+      await user.save();
+  
+      // Send the new password to the user's email
+      const transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: process.env.EMAIL_USER,
+          pass: process.env.EMAIL_PASS,
+        },
+      });
+  
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: email,
+        subject: 'Your new password',
+        text: `Your new password is: ${newPassword}. Please change it in your account settings.`,
+      };
+  
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).send({ message: "Error sending email." });
+        } else {
+          console.log('Email sent: ' + info.response);
+          return res.status(200).send({ message: "New password sent to your email." });
+        }
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ message: err });
+    }
+  };

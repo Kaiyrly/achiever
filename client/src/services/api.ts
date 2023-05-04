@@ -176,6 +176,16 @@ export const changePassword = async (userId: string, currentPassword: string, ne
   }
 };
 
+export const requestPasswordReset = async (email: string) => {
+  try {
+    const response = await API.post(`${API_URL}/api/auth/resetPassword`, { email });
+    return response.data;
+  } catch (error) {
+    console.log("Error resetting password: ", error);
+    throw error;
+  }
+}
+
 export const fetchGPTAnswer = async (prompt: string) => {
   try {
     const response = await API.post(`${API_URL}/gpt3`, {
