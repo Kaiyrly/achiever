@@ -75,6 +75,15 @@ export const CardList: React.FC<CardListProps> = ({ goals, onDeleteGoal, onUpdat
               <label htmlFor={`goalAchievedCheckbox-${goal.goalId}`}>Goal Achieved</label>
             </div>
             <Button
+              variant="outline-success"
+              onClick={(e) => {
+                e.stopPropagation();
+                goToGoal(goal.goalId, goal.name);
+              }}
+            >
+              Show Tasks
+            </Button>
+            <Button
               variant="secondary"
               className="delete-goal-btn"
               onClick={(e) => {
