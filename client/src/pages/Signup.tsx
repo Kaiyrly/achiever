@@ -1,6 +1,8 @@
 import React, { FormEvent, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Alert from "react-bootstrap/Alert"; 
+
 import { useNavigate } from "react-router-dom";
 import { signUp } from '../services/api'; 
 
@@ -8,6 +10,8 @@ export const Signup: React.FC = () => {
   const [username, setUsername] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
+  const [errorMessage, setErrorMessage] = useState<string>();
+
   const navigate = useNavigate();
 
   const submitHandler = async (e: FormEvent<HTMLFormElement>) => {
@@ -19,14 +23,23 @@ export const Signup: React.FC = () => {
     try {
       await signUp(email, username, password);
       navigate("/login");
-    } catch (error) {
-        console.log(error);
+    } catch (error: any) {
+        if (error.response.status == 401) {
+          setErrorMessage("User with this email already exists"); 
+        } else {
+          setErrorMessage("An error occurred while signing up. Please try again.");
+        }
     }
   };
 
   return (
     <div className="signup-form">
       <Form onSubmit={submitHandler}>
+        {errorMessage && ( // Conditionally render the error message
+          <Alert variant="danger" onClose={() => setErrorMessage(undefined)} dismissible>
+            {errorMessage}
+          </Alert>
+        )}
         <Form.Group className="mb-3" controlId="formUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control

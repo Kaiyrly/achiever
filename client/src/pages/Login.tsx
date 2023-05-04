@@ -2,6 +2,7 @@ import React, { FormEvent, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import Form from 'react-bootstrap/Form';
+import Alert from "react-bootstrap/Alert"; 
 import '../App.css'
 import { useLocation, useNavigate } from 'react-router-dom';
 import { signIn } from '../services/api'; 
@@ -9,6 +10,8 @@ import { signIn } from '../services/api';
 export const Login: React.FC<{token: string | undefined, setToken: (userToken: {token: string | undefined}) => void}> = ({token, setToken}) => {
   const [email, setEmail] = useState<string>()
   const [password, setPassword] = useState<string>()
+  const [errorMessage, setErrorMessage] = useState<string>();
+
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -22,9 +25,14 @@ export const Login: React.FC<{token: string | undefined, setToken: (userToken: {
 
       setToken({ token: data.accessToken });
       navigate(location.state?.from?.pathname || "/", { replace: true });
-    } catch (error) {
-      console.error(error);
-      // You can add a state variable to display the error message on the UI if needed.
+    } catch (error: any) {
+      if (error.response.status == 401) {
+        setErrorMessage("Invalid password."); 
+      } else if (error.response.status == 404) {
+        setErrorMessage("User not found");
+      } else {
+        setErrorMessage("An error occurred while signing in. Please try again.");
+      }
     }
   };
 
@@ -36,6 +44,11 @@ export const Login: React.FC<{token: string | undefined, setToken: (userToken: {
   return (
     <div className='login-form'>
       <Form onSubmit={submitHandler}>
+        {errorMessage && ( 
+          <Alert variant="danger" onClose={() => setErrorMessage(undefined)} dismissible>
+            {errorMessage}
+          </Alert>
+        )}
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" onChange={e => setEmail(e.target.value)}/>

@@ -7,6 +7,16 @@ const bcrypt = require("bcryptjs");
 
 exports.signup = async (req, res) => {
     try {
+      const userEmailExists = await User.findOne({
+        email: req.body.email
+      }).exec();
+      if(userEmailExists) {
+        console.log("Email already registered")
+        return res.status(401).send({
+          accessToken: null,
+          message: "Email already registered!"
+        });
+      }
       const user = new User({
         username: req.body.username,
         email: req.body.email,
