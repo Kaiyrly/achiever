@@ -2,18 +2,23 @@ const mongoose = require('mongoose');
 
 const completedTasksPerDaySchema = new mongoose.Schema(
   {
-    date: { type: Date, required: true, unique: true },
     completedTasks: { type: Number, required: true, default: 0 },
     userId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
-      required: true,
+      required: true
     },
+    date: { type: Date, required: true, index: true, unique: false },
   },
   {
     timestamps: true,
   }
 );
+
+
+completedTasksPerDaySchema.index({ date: 1, userId: 1 }, { unique: true });
+
+
 
 const CompletedTasksPerDay = mongoose.model('CompletedTasksPerDay', completedTasksPerDaySchema);
 

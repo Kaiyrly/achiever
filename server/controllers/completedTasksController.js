@@ -1,9 +1,13 @@
 const completedTasks = require("../models/CompletedTasksPerDay")
 
+
+
+
 exports.updateDayStats = async (req, res) => {
   const userId = req.body.userId;
   const date = req.body.date;
   const taskComplete = req.body.taskComplete;
+  console.log("completedTasks: ", userId, date)
 
   try {
     const dayStats = await completedTasks.findOneAndUpdate(
@@ -17,6 +21,8 @@ exports.updateDayStats = async (req, res) => {
         upsert: true, 
       }
     );
+
+    console.log("Completed tasks: ", dayStats)
 
     res.status(200).json(dayStats);
   } catch (error) {

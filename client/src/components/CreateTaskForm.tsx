@@ -29,6 +29,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
       if (task.name) {
         const simplerTasks = await breakdownRecurringTask(task.name);
         const toDoList = simplerTasks.split(',').map((item: string) => ({ name: item.trim(), value: false } as IToDo));
+        console.log(toDoList)
         setTask({ ...task, value: new IToDoList(toDoList) });
       }
     };

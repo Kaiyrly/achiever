@@ -16,6 +16,7 @@ export interface ITask {
   name: string
   value: IToDoList | INumberType | IBooleanType
   taskComplete: boolean
+  recurring?: boolean
   goalId: string
   taskId: string
   taskType: string

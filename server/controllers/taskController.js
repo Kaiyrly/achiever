@@ -48,6 +48,15 @@ exports.getTasks = async (req, res) => {
   }
 };
 
+exports.getRecurringTasks = async(req, res) => {
+  try {
+    const tasks = await Task.find({ recurring: true});
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
+
 exports.getCompletedTasks = async (req, res) => {
   try {
 

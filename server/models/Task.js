@@ -19,8 +19,14 @@ const TaskSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false,
+  },
   goalId: String,
   taskComplete: Boolean,
+  recurring: Boolean,
   taskType: String,
   value: mongoose.Schema.Types.Mixed,
   completionDate: {
