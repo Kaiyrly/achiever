@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import { isEmpty } from 'lodash';
+
 
 interface EditTaskFormProps {
   initialTask: ITask;
@@ -33,6 +35,27 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 
   const isBooleanType = (value: IToDoList | INumberType | IBooleanType): value is IBooleanType => {
     return (value as IBooleanType).name !== undefined && typeof (value as IBooleanType).value === 'boolean';
+  };
+
+  const isFormValid = () => {
+    if (isEmpty(task.name)) {
+      return false;
+    }
+  
+    if (taskType === 'NumberType') {
+      const numberType = task.value as INumberType;
+      return (
+        numberType.initialValue !== undefined &&
+        numberType.targetValue !== undefined
+      );
+    }
+  
+    if (taskType === 'ToDoList') {
+      const toDoList = task.value as IToDoList;
+      return toDoList.value.length > 0;
+    }
+  
+    return true;
   };
   
   
@@ -186,7 +209,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
         </Form.Select> */}
       {/* </Form.Group> */}
       {taskTypeForm()}
-      <Button type="submit">Save changes</Button>
+      <Button type="submit" disabled={!isFormValid()}>Save changes</Button>
       <Button variant="secondary" className="ml-2" onClick={onCancel}>Cancel</Button>
     </Form>
  

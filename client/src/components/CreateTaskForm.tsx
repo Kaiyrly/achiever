@@ -5,6 +5,8 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { randomIdGenerator } from '../utils';
 import { v4 as uuidv4 } from 'uuid';
+import { isEmpty } from 'lodash';
+
 
 export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, goalId: string  }> = ({ createHandler, goalId }) => {
   const [task, setTask] = useState<ITask>({
@@ -21,6 +23,27 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     createHandler?.(task);
+  };
+
+  const isFormValid = () => {
+    if (isEmpty(task.name)) {
+      return false;
+    }
+  
+    if (taskType === 'NumberType') {
+      const numberType = task.value as INumberType;
+      return (
+        numberType.initialValue !== undefined &&
+        numberType.targetValue !== undefined
+      );
+    }
+  
+    if (taskType === 'ToDoList') {
+      const toDoList = task.value as IToDoList;
+      return toDoList.value.length > 0;
+    }
+  
+    return true;
   };
 
   const taskTypeForm = () => {
@@ -156,7 +179,9 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
         </Form.Select>
       </Form.Group>
       {taskTypeForm()}
-      <Button type="submit">Create!</Button>
+      <Button type="submit" disabled={!isFormValid()}>
+        Create!
+      </Button>
     </Form>
   );
 };
