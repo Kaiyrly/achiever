@@ -16,8 +16,9 @@ export interface ITask {
   name: string
   value: IToDoList | INumberType | IBooleanType
   taskComplete: boolean
-  recurring?: boolean
+  recurring: boolean
   goalId: string
+  userId: string
   taskId: string
   taskType: string
   completionDate?: Date; 
@@ -65,9 +66,11 @@ export class IBooleanType {
 export interface IFetchedTask {
   completionDate: Date;
   createdAt: Date; 
-  goalId: string; 
+  goalId: string;
+  userId: string
   id: string;
   name: string;
+  recurring: boolean;
   taskComplete: boolean;
   taskId: string
   taskType: string

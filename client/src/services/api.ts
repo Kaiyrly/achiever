@@ -111,6 +111,18 @@ export const fetchCompletedTasks = async (userId: string) => {
   }
 }
 
+export const fetchRecurringTasks = async (userId: string) => {
+  try {
+    console.log(API_URL)
+    const response = await API.get(`${API_URL}/api/tasks/recurring/${userId}`)
+    console.log(response)
+    const completedTasks = response.data;
+    return completedTasks;
+  } catch (error) {
+    console.log("Error fetching recurring tasks: ", error);
+  }
+}
+
 export const updateCompletedTasks = async (userId: string, date: Date, taskComplete: boolean) => {
   date.setHours(0, 0, 0, 0);
   try {

@@ -20,8 +20,6 @@ export const GoalPage: React.FC = () => {
     const location = useLocation();
     const goalName = location.state?.goalName || '';
     const goalId = params.id ?? '';
-    // const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:5001'
-    const apiUrl = 'https://achiever.herokuapp.com'
 
     const [goalAchieved, setGoalAchieved] = useState(false);
 
@@ -30,8 +28,10 @@ export const GoalPage: React.FC = () => {
         name: task.name,
         taskId: task.taskId,
         goalId: task.goalId,
+        userId: task.userId,
         value: task.value,
         taskComplete: task.taskComplete,
+        recurring: task.recurring,
         taskType: task.taskType,
       };
 
@@ -39,7 +39,7 @@ export const GoalPage: React.FC = () => {
         derivedTask.value = new INumberType(task.name, task.taskComplete, task.value.initialValue, task.value.currentValue, task.value.targetValue);
       }
       if (task.taskType === 'ToDoList') {
-        console.log(task)
+        console.log(task.recurring)
         const toDoList: IToDo[] = task.value;
         derivedTask.value = new IToDoList(toDoList);
       }
@@ -77,6 +77,7 @@ export const GoalPage: React.FC = () => {
   };
 
   const handleCreation = async (taskData: any) => {
+    console.log(taskData)
     try {
       const response = await createTask(taskData);
       const newTaskData = response.newTask;

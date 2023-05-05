@@ -29,7 +29,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   const { token } = useToken();
   const userId = getUserIdFromToken(token ?? '') ?? '';
   const [showEditModal, setShowEditModal] = useState(false);
-
+  const [recurringT, setRecurringT] = useState(item.recurring);
 
 
   const handleModalClose = async (updatedItem: ITask) => {
@@ -78,6 +78,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   };
   
   
+  const handleRecurringChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRecurringT(event.target.checked);
+    const updatedTask = {
+      ...item,
+      recurring: event.target.checked,
+    };
+    console.log(updatedTask)
+    await onUpdateTask(updatedTask);
+  };
 
   const handleDelete = async () => {
     await onDeleteTask(item.taskId);
@@ -207,6 +216,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
             >
               Edit
             </Button>
+
+            <label htmlFor={`recurring-${item.taskId}`} className="task-modal-recurring-label">
+              Recurring
+            </label>
+            <input
+              type="checkbox"
+              id={`recurring-${item.taskId}`}
+              name={`recurring-${item.taskId}`}
+              checked={item.recurring}
+              onChange={handleRecurringChange}
+              onClick={(e) => e.stopPropagation()}
+            />
 
             <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
               <CircularProgressbar

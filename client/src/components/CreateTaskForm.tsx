@@ -6,15 +6,24 @@ import Button from 'react-bootstrap/Button';
 import { randomIdGenerator } from '../utils';
 import { v4 as uuidv4 } from 'uuid';
 import { isEmpty } from 'lodash';
+import useToken from '../hooks/useToken';
+import { getUserIdFromToken } from '../helpers';
 
 
 export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, goalId: string  }> = ({ createHandler, goalId }) => {
+
+
+  const { token } = useToken();
+  const userId = getUserIdFromToken(token ?? '') ?? '';
+
   const [task, setTask] = useState<ITask>({
     name: '',
     taskId: uuidv4(),
     goalId: goalId, // need to change to the goal's id
+    userId: userId,
     value: new IToDoList([]),
     taskComplete: false,
+    recurring: false,
     taskType: "ToDoList"
   });
 

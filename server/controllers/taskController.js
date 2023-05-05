@@ -8,6 +8,7 @@ exports.createTask = async (req, res) => {
       name: req.body.name,
       taskId: req.body.taskId,
       goalId: req.body.goalId,
+      userId: req.body.userId,
       taskComplete: req.body.taskComplete,
       taskType: req.body.taskType,
     };
@@ -49,8 +50,10 @@ exports.getTasks = async (req, res) => {
 };
 
 exports.getRecurringTasks = async(req, res) => {
+  const userId = req.params.id;
   try {
-    const tasks = await Task.find({ recurring: true});
+    const tasks = await Task.find({ recurring: true, taskComplete: false, userId: userId });
+    console.log(userId, tasks);
     res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -79,7 +82,9 @@ exports.updateTask = async (req, res) => {
       taskType: req.body.taskType,
       taskComplete: req.body.taskComplete,
       value: req.body.taskType === "ToDoList" ? req.body.value.value : req.body.value,
+      recurring: req.body.recurring
     };
+    console.log("update task")
     console.log(updateData);
 
     if (req.body.taskComplete) {

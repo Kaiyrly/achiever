@@ -8,8 +8,6 @@ const completedTaskRoutes = require('./routes/completedTaskRoutes')
 const gptRoutes = require('./routes/gptRoutes');
 
 
-
-
 router.use('/api/goals', goalRoutes);
 router.use('/api/tasks', taskRoutes);
 router.use('/api/auth', authRoutes);
