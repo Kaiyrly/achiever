@@ -1,0 +1,34 @@
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+  
+  .custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    padding: 8px;
+    min-width: 150px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+  }
+  
+  .custom-dropdown-item {
+    padding: 4px 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  .custom-dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .custom-dropdown-item input[type="checkbox"] {
+    margin-right: 8px;
+  }
+  
