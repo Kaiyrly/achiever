@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { IGoal } from "../types";
 import { FaTrash, FaEllipsisV } from "react-icons/fa";
+import Form from 'react-bootstrap/Form';
+
 
 import "../styles/CustomDropdown.css";
 
@@ -55,7 +57,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
               setShowDropdown(false);
             }}
           >
-            <FaTrash /> Delete
+            Delete
           </div>
           <div
             className="custom-dropdown-item"
@@ -67,17 +69,28 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
           >
             Edit
           </div>
-          <div className="custom-dropdown-item">
-            <input
-              type="checkbox"
-              id={`goalAchievedCheckbox-${goal.goalId}`}
-              checked={goal.goalAchieved}
-              onChange={(e) => {
+          <div
+            className="custom-dropdown-item"
+            onClick={(e) => {
                 e.stopPropagation();
-                handleGoalAchievedChange(goal.goalId, e.target.checked);
-              }}
+                if ((e.target as HTMLElement).tagName !== "INPUT") {
+                    const checkbox = document.getElementById(`goalAchievedCheckbox-${goal.goalId}`);
+                    if (checkbox) {
+                      checkbox.click();
+                    }
+                }
+            }}>
+            <Form.Check
+                type="checkbox"
+                id={`goalAchievedCheckbox-${goal.goalId}`}
+                checked={goal.goalAchieved}
+                onChange={(e) => {
+                    e.stopPropagation();
+                    handleGoalAchievedChange(goal.goalId, e.target.checked);
+                }}
+                className="mr-1"
+                label="Achieved"
             />
-            <label htmlFor={`goalAchievedCheckbox-${goal.goalId}`}>Achieved</label>
           </div>
         </div>
       )}

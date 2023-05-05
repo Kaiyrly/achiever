@@ -16,9 +16,6 @@ interface GoalCardProps {
 }
 
 export const GoalCard: React.FC<GoalCardProps> = ({ goal, handleDeleteGoal, handleGoalAchievedChange, onEditGoal, goToGoal }) => {
-    const [showDropdown, setShowDropdown] = useState(false);
-    const dropdownRef = useRef(null);
-
     return (
       <Card key={goal.goalId} className="goal-card">
           <Card.Body>
