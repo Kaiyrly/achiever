@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Button from 'react-bootstrap/Button';
 import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
+import Card from 'react-bootstrap/Card';
+import { CustomDropdownTaskCard } from './CustomDropdownTaskCard'; 
 import { ModalComponent } from './ModalComponent';
 import ToDoTypeView from './ToDoTypeView';
 import { NumberTypeView } from './NumberTypeView';
@@ -30,6 +32,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   const userId = getUserIdFromToken(token ?? '') ?? '';
   const [showEditModal, setShowEditModal] = useState(false);
   const [recurringT, setRecurringT] = useState(item.recurring);
+
+
+  const handleEditModalShow = (value: boolean) => {
+    setShowEditModal(value)
+  } 
 
 
   const handleModalClose = async (updatedItem: ITask) => {
@@ -183,60 +190,30 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
           />
         </ModalComponent>
       )}
-      <div className="list-group-item list-group-item-action task-modal-item" onClick={() => setShowModal(true)}>
-        <div className="task-modal-item-name">{item.name}</div>
-          <div className="task-modal-buttons">
-            <Button
-              className="task-modal-button"
-              variant="primary"
-              size="sm"
-              onClick={() => setShowModal(true)}
-            >
-              Show task
-            </Button>
-            <Button
-              className="task-modal-button"
-              variant="secondary"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDelete();
-              }}
-            >
-              <FaTrash />
-            </Button>
-            <Button 
-              className="task-modal-button"
-              variant="warning"
-              size="sm"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowEditModal(true);
-              }}
-            >
-              Edit
-            </Button>
 
-            <label htmlFor={`recurring-${item.taskId}`} className="task-modal-recurring-label">
-              Recurring
-            </label>
-            <input
-              type="checkbox"
-              id={`recurring-${item.taskId}`}
-              name={`recurring-${item.taskId}`}
-              checked={item.recurring}
-              onChange={handleRecurringChange}
-              onClick={(e) => e.stopPropagation()}
-            />
+<div
+  className="list-group-item list-group-item-action task-modal-item"
+  onClick={() => setShowModal(true)}
+>
+  <div className="task-modal-item-content">
+    <div className="title-container">
+      <div className="task-modal-item-title">{item.name}</div>
+      <CustomDropdownTaskCard
+        task={item}
+        handleDeletion={handleDelete}
+        handleRecurringChange={handleRecurringChange}
+        handleModalShow={handleEditModalShow}
+      />
+    </div>
+    <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
+      <CircularProgressbar
+        value={completionPercentage}
+        text={`${Math.round(completionPercentage)}%`}
+      />
+    </div>
+  </div>
+</div>
 
-            <div style={{ width: '60px', height: '60px', marginLeft: '10px' }}>
-              <CircularProgressbar
-                value={completionPercentage}
-                text={`${Math.round(completionPercentage)}%`}
-              />
-            </div>
-        </div>
-      </div>
     </>
   );
   return <>default view</>;

@@ -19,3 +19,21 @@
     margin-left: 0.5rem;
   }
   
+  .task-modal-item-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .task-modal-item-title {
+    /* margin-bottom: 0.75rem; */
+    font-size: 1.25rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  
+  .title-container {
+    display: flex;
+    align-items: center;
+  }
+  

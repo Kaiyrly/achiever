@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
-import { CustomDropdown } from './CustomDropdown';
+import { CustomDropdownGoalCard } from './CustomDropdownGoalCard';
 import { IGoal } from '../types';
 
 import '../styles/CardList.css';
@@ -39,7 +39,7 @@ export const GoalCard: React.FC<GoalCardProps> = ({ goal, handleDeleteGoal, hand
               Show Tasks
             </Button>
             <div className="ml-auto">
-              <CustomDropdown
+              <CustomDropdownGoalCard
                   goal={goal}
                   handleDeleteGoal={handleDeleteGoal}
                   onEditGoal={onEditGoal}
