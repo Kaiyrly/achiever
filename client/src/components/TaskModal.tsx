@@ -193,7 +193,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
 
 <div
   className="list-group-item list-group-item-action task-modal-item"
-  onClick={() => setShowModal(true)}
+  onClick={() => {console.log(item); setShowModal(true)}}
 >
   <div className="task-modal-item-content">
     <div className="title-container">

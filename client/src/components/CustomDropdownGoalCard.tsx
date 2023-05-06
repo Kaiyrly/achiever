@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { IGoal } from "../types";
-import { FaTrash, FaEllipsisV } from "react-icons/fa";
+import { FaTrash, FaEdit, FaEllipsisV } from "react-icons/fa";
 import Form from 'react-bootstrap/Form';
 
 
@@ -57,7 +57,7 @@ export const CustomDropdownGoalCard: React.FC<CustomDropdownGoalCardProps> = ({
               setShowDropdown(false);
             }}
           >
-            Delete
+            <FaTrash />     Delete
           </div>
           <div
             className="custom-dropdown-item"
@@ -67,7 +67,7 @@ export const CustomDropdownGoalCard: React.FC<CustomDropdownGoalCardProps> = ({
               setShowDropdown(false);
             }}
           >
-            Edit
+            <FaEdit />     Edit
           </div>
           <div
             className="custom-dropdown-item"

@@ -2,7 +2,6 @@ const { Task, NumberTypeTask, ToDoListTask, BooleanTypeTask } = require("../mode
 
 
 exports.createTask = async (req, res) => {
-  console.log(req.body);
   try {
     let taskData = {
       name: req.body.name,
@@ -27,6 +26,7 @@ exports.createTask = async (req, res) => {
         res.status(400).json({ message: "Invalid task type" });
         return;
     }
+
 
     const newTask = new Task(taskData);
     await newTask.save();

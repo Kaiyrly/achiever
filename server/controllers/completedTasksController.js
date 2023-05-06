@@ -22,6 +22,8 @@ exports.updateDayStats = async (req, res) => {
       }
     );
 
+    dayStats.completedTasks = dayStats.completedTasks < 0 ? 0 : dayStats.completedTasks
+
     console.log("Completed tasks: ", dayStats)
 
     res.status(200).json(dayStats);

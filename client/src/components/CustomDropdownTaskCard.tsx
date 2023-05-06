@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ITask } from "../types";
-import { FaTrash, FaEllipsisH } from "react-icons/fa";
+import { FaTrash, FaEllipsisH, FaEdit } from "react-icons/fa";
 import Form from 'react-bootstrap/Form';
 
 
@@ -56,7 +56,7 @@ export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
                 handleDeletion();
               }}
             >
-              Delete
+              <FaTrash /> Delete
             </div>
           <div 
               className="custom-dropdown-item"
@@ -65,9 +65,31 @@ export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
                 handleModalShow(true);
               }}
             >
-              Edit
+              <FaEdit /> Edit
             </div>
-            <label htmlFor={`recurring-${task.taskId}`} className="task-modal-recurring-label">
+            <div
+              className="custom-dropdown-item"
+              onClick={(e) => {
+                  e.stopPropagation();
+                  if ((e.target as HTMLElement).tagName !== "INPUT") {
+                      const checkbox = document.getElementById(`recurring-${task.taskId}`);
+                      if (checkbox) {
+                        checkbox.click();
+                      }
+                  }
+              }}>
+              <Form.Check
+                  type="checkbox"
+                  id={`recurring-${task.taskId}`}
+                  name={`recurring-${task.taskId}`}
+                  checked={task.recurring}
+                  onChange={handleRecurringChange}
+                  onClick={(e) => e.stopPropagation()}
+                  className="mr-1"
+                  label="Recurring"
+              />
+            </div>
+            {/* <label htmlFor={`recurring-${task.taskId}`} className="task-modal-recurring-label">
               Recurring
             </label>
             <input
@@ -77,7 +99,8 @@ export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
               checked={task.recurring}
               onChange={handleRecurringChange}
               onClick={(e) => e.stopPropagation()}
-            />
+            /> */}
+
         </div>
         
       )}

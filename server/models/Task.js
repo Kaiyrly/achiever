@@ -18,6 +18,7 @@ const TaskSchema = new mongoose.Schema({
   taskId: {
     type: String,
     required: true,
+    uniquq: true
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
