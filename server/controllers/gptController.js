@@ -4,18 +4,21 @@ const dotenv = require('dotenv');
 dotenv.config();
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const API_URL = 'https://api.openai.com/v1/engines/text-curie-001/completions';
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 exports.generateResponse = async (req, res) => {
-  const { prompt, temperature, max_tokens } = req.body;
+  const { prompt} = req.body;
 
   try {
     const response = await axios.post(
-      API_URL,
+      OPENAI_API_URL,
       {
-        prompt,
-        temperature,
-        max_tokens,
+        model: 'gpt-3.5-turbo',
+        messages: [{ role: 'system', content: prompt }],
+        max_tokens:200,
+        n: 1,
+        stop: null,
+        temperature: 0.5,
       },
       {
         headers: {
@@ -24,8 +27,9 @@ exports.generateResponse = async (req, res) => {
         },
       }
     );
-
-    res.json(response.data.choices[0].text.trim());
+    console.log(response.data.choices[0].message)
+    const generatedText = response.data.choices[0].message.content.trim();
+    res.json({ text: generatedText });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'An error occurred while processing your request.' });

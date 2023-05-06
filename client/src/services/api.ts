@@ -201,9 +201,7 @@ export const requestPasswordReset = async (email: string) => {
 export const fetchGPTAnswer = async (prompt: string) => {
   try {
     const response = await API.post(`${API_URL}/gpt3`, {
-      prompt,
-      temperature: 0.5,
-      max_tokens: 150,
+      prompt
     });
 
     return response.data;
