@@ -22,6 +22,14 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if(isNumberType(task.value)) {
+      if(isNaN(task.value.initialValue)) {
+        task.value.initialValue = 0;
+      }
+      if(isNaN(task.value.targetValue)) {
+        task.value.targetValue = 0;
+      }
+    }
     editHandler(task);
   };
 
@@ -69,7 +77,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             type="number"
             value={task.value.initialValue}
             onChange={(e) => {
-              const initialValue = parseInt(e.target.value) || 0;
+              const initialValue = parseInt(e.target.value);
               const numberType = task.value as INumberType;
               numberType.initialValue = initialValue
               setTask({
@@ -83,7 +91,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             type="number"
             value={task.value.targetValue}
             onChange={(e) => {
-              const targetValue = parseInt(e.target.value) || 0;
+              const targetValue = parseInt(e.target.value);
               const numberType = task.value as INumberType;
               numberType.targetValue = targetValue
               setTask({
@@ -102,7 +110,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
             <Form.Control
               as="textarea"
               rows={3}
-              value={task.value.value.map((item: IToDo) => item.name).join(', ')}
+              value={task.value.value.map((item: IToDo) => item.name).join(',')}
               onChange={(e) => {
                 const toDoList = e.target.value
                   .split(',')
