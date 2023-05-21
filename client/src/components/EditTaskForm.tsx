@@ -70,38 +70,38 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
 
   const taskTypeForm = () => {
     if (isNumberType(task.value)) {
-      return (
-        <Form.Group controlId="numberTask">
-          <Form.Label>Initial Value</Form.Label>
-          <Form.Control
-            type="number"
-            value={task.value.initialValue}
-            onChange={(e) => {
-              const initialValue = parseInt(e.target.value);
-              const numberType = task.value as INumberType;
-              numberType.initialValue = initialValue
-              setTask({
-                ...task,
-                value: numberType,
-              });
-            }}
-          />
-          <Form.Label>Target Value</Form.Label>
-          <Form.Control
-            type="number"
-            value={task.value.targetValue}
-            onChange={(e) => {
-              const targetValue = parseInt(e.target.value);
-              const numberType = task.value as INumberType;
-              numberType.targetValue = targetValue
-              setTask({
-                ...task,
-                value: numberType,
-              });
-            }}
-          />
-        </Form.Group>
-      );
+      // return (
+      //   <Form.Group controlId="numberTask">
+      //     <Form.Label>Initial Value</Form.Label>
+      //     <Form.Control
+      //       type="number"
+      //       value={task.value.initialValue}
+      //       onChange={(e) => {
+      //         const initialValue = parseInt(e.target.value);
+      //         const numberType = task.value as INumberType;
+      //         numberType.initialValue = initialValue
+      //         setTask({
+      //           ...task,
+      //           value: numberType,
+      //         });
+      //       }}
+      //     />
+      //     <Form.Label>Target Value</Form.Label>
+      //     <Form.Control
+      //       type="number"
+      //       value={task.value.targetValue}
+      //       onChange={(e) => {
+      //         const targetValue = parseInt(e.target.value);
+      //         const numberType = task.value as INumberType;
+      //         numberType.targetValue = targetValue
+      //         setTask({
+      //           ...task,
+      //           value: numberType,
+      //         });
+      //       }}
+      //     />
+      //   </Form.Group>
+      // );
     }
     if (isToDoList(task.value)) {
         return (
