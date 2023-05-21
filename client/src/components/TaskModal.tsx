@@ -31,7 +31,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   const { token } = useToken();
   const userId = getUserIdFromToken(token ?? '') ?? '';
   const [showEditModal, setShowEditModal] = useState(false);
-  const [recurringT, setRecurringT] = useState(item.recurring);
+  const [priorityT, setPriorityT] = useState(item.priority);
 
 
   const handleEditModalShow = (value: boolean) => {
@@ -85,11 +85,11 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
   };
   
   
-  const handleRecurringChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRecurringT(event.target.checked);
+  const handlePriorityChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPriorityT(event.target.checked);
     const updatedTask = {
       ...item,
-      recurring: event.target.checked,
+      priority: event.target.checked,
     };
     console.log(updatedTask)
     await onUpdateTask(updatedTask);
@@ -201,7 +201,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ item, onUpdateTask, onDele
       <CustomDropdownTaskCard
         task={item}
         handleDeletion={handleDelete}
-        handleRecurringChange={handleRecurringChange}
+        handlePriorityChange={handlePriorityChange}
         handleModalShow={handleEditModalShow}
       />
     </div>

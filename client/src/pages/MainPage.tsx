@@ -7,7 +7,7 @@ import '../App.css'
 import { ModalComponent } from '../components/ModalComponent';
 import { CreateGoalForm } from '../components/CreateGoalForm';
 import { EditGoalForm } from '../components/EditGoalForm';
-import { RecurringTasks } from '../components/RecurringTasks';
+import { PriorityTasks } from '../components/PriorityTasks';
 import { IGoal } from '../types';
 import { getUserIdFromToken } from '../helpers/index'
 import useToken from '../hooks/useToken';
@@ -145,8 +145,8 @@ export const MainPage: React.FC = () => {
                   searchQuery={searchQuery}
                 />
               </Tab>
-              <Tab eventKey="recurringTasks" title="Recurring Tasks">
-                  <RecurringTasks />
+              <Tab eventKey="priorityTasks" title="Priority Tasks">
+                  <PriorityTasks />
               </Tab>
             </Tabs>
       </div>

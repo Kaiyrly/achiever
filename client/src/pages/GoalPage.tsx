@@ -31,7 +31,7 @@ export const GoalPage: React.FC = () => {
         userId: task.userId,
         value: task.value,
         taskComplete: task.taskComplete,
-        recurring: task.recurring,
+        priority: task.priority,
         taskType: task.taskType,
       };
 
@@ -39,7 +39,7 @@ export const GoalPage: React.FC = () => {
         derivedTask.value = new INumberType(task.name, task.taskComplete, task.value.initialValue, task.value.currentValue, task.value.targetValue);
       }
       if (task.taskType === 'ToDoList') {
-        console.log(task.recurring)
+        console.log(task.priority)
         const toDoList: IToDo[] = task.value;
         derivedTask.value = new IToDoList(toDoList);
       }

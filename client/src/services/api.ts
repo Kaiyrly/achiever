@@ -111,15 +111,15 @@ export const fetchCompletedTasks = async (userId: string) => {
   }
 }
 
-export const fetchRecurringTasks = async (userId: string) => {
+export const fetchPriorityTasks = async (userId: string) => {
   try {
     console.log(API_URL)
-    const response = await API.get(`${API_URL}/api/tasks/recurring/${userId}`)
+    const response = await API.get(`${API_URL}/api/tasks/priority/${userId}`)
     console.log(response)
     const completedTasks = response.data;
     return completedTasks;
   } catch (error) {
-    console.log("Error fetching recurring tasks: ", error);
+    console.log("Error fetching priority tasks: ", error);
   }
 }
 

@@ -49,10 +49,10 @@ exports.getTasks = async (req, res) => {
   }
 };
 
-exports.getRecurringTasks = async(req, res) => {
+exports.getPriorityTasks = async(req, res) => {
   const userId = req.params.id;
   try {
-    const tasks = await Task.find({ recurring: true, taskComplete: false, userId: userId });
+    const tasks = await Task.find({ priority: true, taskComplete: false, userId: userId });
     console.log(userId, tasks);
     res.json(tasks);
   } catch (error) {
@@ -82,7 +82,7 @@ exports.updateTask = async (req, res) => {
       taskType: req.body.taskType,
       taskComplete: req.body.taskComplete,
       value: req.body.taskType === "ToDoList" ? req.body.value.value : req.body.value,
-      recurring: req.body.recurring
+      priority: req.body.priority
     };
     console.log("update task")
     console.log(updateData);

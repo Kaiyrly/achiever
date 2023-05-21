@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const { getTasks, createTask, updateTask, deleteTask, deleteTaskByGoalId, getCompletedTasks, getRecurringTasks } = require('../controllers/taskController');
+const { getTasks, createTask, updateTask, deleteTask, deleteTaskByGoalId, getCompletedTasks, getPriorityTasks } = require('../controllers/taskController');
 
 router.get('/', getTasks);
 router.get("/completed", getCompletedTasks);
-router.get("/recurring/:id", getRecurringTasks);
+router.get("/priority/:id", getPriorityTasks);
 router.post('/', createTask);
 router.put('/:id', updateTask);
 router.delete('/:id', deleteTask);

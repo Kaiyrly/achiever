@@ -16,7 +16,7 @@ export interface ITask {
   name: string
   value: IToDoList | INumberType | IBooleanType
   taskComplete: boolean
-  recurring: boolean
+  priority: boolean
   goalId: string
   userId: string
   taskId: string
@@ -70,7 +70,7 @@ export interface IFetchedTask {
   userId: string
   id: string;
   name: string;
-  recurring: boolean;
+  priority: boolean;
   taskComplete: boolean;
   taskId: string
   taskType: string

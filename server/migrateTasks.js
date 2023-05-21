@@ -11,10 +11,10 @@ mongoose.connect(connectionString, {
 
 const updateTasksWithUserId = async () => {
   try {
-    const tasksWithoutUserId = await Task.find({ recurring: { $exists: false } });
+    const tasksWithoutUserId = await Task.find({ priority: { $exists: false } });
 
     for (const task of tasksWithoutUserId) {
-        task.recurring = false;
+        task.priority = false;
         await task.save();
         console.log(task)
     }

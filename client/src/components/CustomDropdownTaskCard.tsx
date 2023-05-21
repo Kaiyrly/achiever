@@ -9,14 +9,14 @@ import "../styles/CustomDropdown.css";
 interface CustomDropdownTaskCardProps {
   task: ITask;
   handleDeletion: () => void;
-  handleRecurringChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handlePriorityChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleModalShow: (value: boolean) => void;
 }
 
 export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
   task,
   handleDeletion,
-  handleRecurringChange,
+  handlePriorityChange,
   handleModalShow,
 }) => {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -72,7 +72,7 @@ export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
               onClick={(e) => {
                   e.stopPropagation();
                   if ((e.target as HTMLElement).tagName !== "INPUT") {
-                      const checkbox = document.getElementById(`recurring-${task.taskId}`);
+                      const checkbox = document.getElementById(`priority-${task.taskId}`);
                       if (checkbox) {
                         checkbox.click();
                       }
@@ -80,24 +80,24 @@ export const CustomDropdownTaskCard: React.FC<CustomDropdownTaskCardProps> = ({
               }}>
               <Form.Check
                   type="checkbox"
-                  id={`recurring-${task.taskId}`}
-                  name={`recurring-${task.taskId}`}
-                  checked={task.recurring}
-                  onChange={handleRecurringChange}
+                  id={`priority-${task.taskId}`}
+                  name={`priority-${task.taskId}`}
+                  checked={task.priority}
+                  onChange={handlePriorityChange}
                   onClick={(e) => e.stopPropagation()}
                   className="mr-1"
-                  label="Recurring"
+                  label="Priority"
               />
             </div>
-            {/* <label htmlFor={`recurring-${task.taskId}`} className="task-modal-recurring-label">
-              Recurring
+            {/* <label htmlFor={`priority-${task.taskId}`} className="task-modal-priority-label">
+              Priority
             </label>
             <input
               type="checkbox"
-              id={`recurring-${task.taskId}`}
-              name={`recurring-${task.taskId}`}
-              checked={task.recurring}
-              onChange={handleRecurringChange}
+              id={`priority-${task.taskId}`}
+              name={`priority-${task.taskId}`}
+              checked={task.priority}
+              onChange={handlePriorityChange}
               onClick={(e) => e.stopPropagation()}
             /> */}
 

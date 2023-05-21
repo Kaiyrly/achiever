@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ITask, IToDoList, INumberType, IToDo, IBooleanType } from '../types';
-import { breakdownRecurringTask } from '../services/gptApi';
+import { breakdownPriorityTask } from '../services/gptApi';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
@@ -21,7 +21,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
     userId: userId,
     value: new IToDoList([]),
     taskComplete: false,
-    recurring: false,
+    priority: false,
     taskType: "ToDoList"
   });
 
@@ -72,7 +72,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
     if (description) {
       setIsLoading(true);
       try {
-        const simplerTasks = await breakdownRecurringTask(description);
+        const simplerTasks = await breakdownPriorityTask(description);
         setToDoTextArea(simplerTasks);
         setIsLoading(false);
       } catch (error) {

@@ -27,7 +27,7 @@ const TaskSchema = new mongoose.Schema({
   },
   goalId: String,
   taskComplete: Boolean,
-  recurring: Boolean,
+  priority: Boolean,
   taskType: String,
   value: mongoose.Schema.Types.Mixed,
   completionDate: {
