@@ -102,6 +102,7 @@ export const EditTaskForm: React.FC<EditTaskFormProps> = ({
       //     />
       //   </Form.Group>
       // );
+      return;
     }
     if (isToDoList(task.value)) {
         return (

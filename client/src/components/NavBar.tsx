@@ -25,6 +25,7 @@ export const NavBar: React.FC<NavBarProps> = ({ token, setToken }) => {
           <Nav.Link href="/">Main</Nav.Link>
           <Nav.Link href="/statistics">Statistics</Nav.Link>
           <Nav.Link href="/settings">Settings</Nav.Link>
+          <Nav.Link href="/usage">How to use</Nav.Link>
         </Nav>
         {token ? (
           <Button variant="outline-primary" onClick={handleLogout}>

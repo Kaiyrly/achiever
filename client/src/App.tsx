@@ -3,6 +3,7 @@ import './App.css';
 import { Route, Routes} from 'react-router-dom';
 import { MainPage } from './pages/MainPage';
 import { ErrorPage } from './pages/ErrorPage';
+import UsagePage  from './pages/UseagePage';
 import { NavBar } from './components/NavBar';
 import { Container } from 'react-bootstrap';
 import { Settings } from './pages/Settings';
@@ -27,6 +28,7 @@ function App() {
             <Route index element={<PrivateRoute><MainPage /></PrivateRoute>} />
             <Route path="settings" element={<PrivateRoute><Settings /></PrivateRoute>} />
             <Route path="statistics" element={<PrivateRoute><Statistics /></PrivateRoute>} />
+            <Route path="usage" element={<PrivateRoute><UsagePage /></PrivateRoute>} />
             <Route path="goals/:id" element={<PrivateRoute><GoalPage /></PrivateRoute>} />
             <Route path="login" element={<Login token={token} setToken={setToken} />} />
             <Route path="signup" element={<Signup />} />

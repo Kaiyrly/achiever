@@ -222,7 +222,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
             <Form.Label>Please provide a brief description of your task (not more than 100 characters):</Form.Label>
             <Form.Control
               type="text"
-              maxLength={100}
+              maxLength={250}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />

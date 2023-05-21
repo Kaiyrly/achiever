@@ -24,7 +24,7 @@ export const Login: React.FC<{token: string | undefined, setToken: (userToken: {
       const data = await signIn(email, password);
 
       setToken({ token: data.accessToken });
-      navigate(location.state?.from?.pathname || "/", { replace: true });
+      navigate(location.state?.from?.pathname || "/usage", { replace: true });
     } catch (error: any) {
       if (error.response.status == 401) {
         setErrorMessage("Invalid password."); 
