@@ -205,7 +205,7 @@ export const CreateTaskForm: React.FC<{ createHandler?: (goal: ITask) => void, g
             >
             <option value="ToDoList">To-Do List</option>
             <option value="NumberType">Number Type</option>
-            <option value="BooleanType">Boolean Type</option>
+            {/* <option value="BooleanType">Boolean Type</option> */}
           </Form.Select>
         </Form.Group>
         {taskTypeForm()}
